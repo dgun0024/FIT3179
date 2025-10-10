@@ -1,0 +1,207 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Student Suspensions by Age Group and Gender (2012-2023)",
+    "fontSize": 22,
+    "anchor": "start"
+  },
+  "width": 900,
+  "height": 450,
+  "data": {
+    "url": "data/SuspensionData.csv",
+    "format": {"type": "csv"}
+  },
+  "params": [
+    {
+      "name": "ageGroupFilter",
+      "value": "04-06 years",
+      "bind": {
+        "input": "select",
+        "options": [
+          "04-06 years",
+          "07-09 years",
+          "10-12 years",
+          "13-16 years",
+          "Over 16 years"
+        ],
+        "labels": [
+          "4-6 years",
+          "7-9 years",
+          "10-12 years",
+          "13-16 years",
+          "Over 16 years"
+        ],
+        "name": "Age Group: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "fold": [
+        "2012", "2013", "2014", "2015", "2016", "2017",
+        "2018", "2019", "2020", "2021", "2022", "2023"
+      ],
+      "as": ["Year", "Suspensions"]
+    },
+    {
+      "calculate": "toNumber(datum.Suspensions)", "as": "Suspensions"
+    },
+    {
+      "filter": "datum.Age_Group == ageGroupFilter"
+    },
+    {
+      "joinaggregate": [
+        {"op": "max", "field": "Suspensions", "as": "MaxSuspensions"},
+        {"op": "min", "field": "Suspensions", "as": "MinSuspensions"}
+      ],
+      "groupby": ["Gender"]
+    },
+    {
+      "calculate":  "'Highest in ' + datum.Year",
+      "as": "max_label"
+    },
+    {
+      "calculate": "'Lowest in ' + datum.Year",
+      "as": "min_label"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "ordinal",
+      "axis": {
+        "title": "Year",
+        "labelAngle": -45,
+        "titleFontSize": 14,
+        "labelFontSize": 12
+      }
+    },
+    "y": {
+      "field": "Suspensions",
+      "type": "quantitative",
+      "scale": {
+        "zero": true,
+        "padding": 20
+      },
+      "axis": {
+        "title": "Number of Suspensions",
+        "titleFontSize": 14,
+        "labelFontSize": 12
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 3
+      },
+      "selection": {
+        "genderSelection": {
+          "type": "multi",
+          "fields": ["Gender"],
+          "bind": "legend"
+        }
+      },
+      "encoding": {
+        "color": {
+          "field": "Gender",
+          "type": "nominal",
+          "scale": {"domain": ["Female", "Male"], "range": ["#0072B2", "#D55E00"]},
+          "legend": {
+            "title": "Gender (Click to Filter)",
+            "titleFontSize": 13,
+            "labelFontSize": 12,
+            "orient": "right"
+          }
+        },
+        "opacity": {
+          "condition": {"selection": "genderSelection", "value": 1},
+          "value": 0.15
+        },
+        "tooltip": [
+          {"field": "Age_Group", "type": "nominal", "title": "Age Group"},
+          {"field": "Gender", "type": "nominal", "title": "Gender"},
+          {"field": "Year", "type": "ordinal", "title": "Year"},
+          {
+            "field": "Suspensions",
+            "type": "quantitative",
+            "title": "Number of Suspensions",
+            "format": ","
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 30
+      },
+      "encoding": {
+        "color": {
+          "field": "Gender",
+          "type": "nominal",
+          "scale": {"domain": ["Female", "Male"], "range": ["#e377c2", "#1f77b4"]}
+        },
+        "opacity": {
+          "condition": {"selection": "genderSelection", "value": 1},
+          "value": 0.15
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "baseline": "bottom",
+        "bandSize": 0,
+        "dy": -15,
+        "fontSize": 11,
+        "fontStyle": "italic",
+        "lineBreak": "\n"
+      },
+      "encoding": {
+        "text": {
+          "condition": {
+            "test": "datum.Suspensions == datum.MaxSuspensions",
+            "value": {"expr": "'Highest suspensions\\nof ' + format(datum.Suspensions, ',') + ' in ' + datum.Year"}
+          },
+          "value": ""
+        },
+        "color": {"value": "black"},
+        "opacity": {
+          "condition": {"selection": "genderSelection", "value": 1},
+          "value": 1
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "line-bottom",
+        "dy": 15,
+        "fontSize": 11,
+        "fontStyle": "italic",
+        "lineBreak": "\n"
+      },
+      "encoding": {
+        "text": {
+          "condition": {
+            "test": "datum.Suspensions == datum.MinSuspensions",
+            "value": {"expr": "'Lowest suspensions\\nof ' + format(datum.Suspensions, ',') + ' in ' + datum.Year"}
+          },
+          "value": ""
+        },
+        "color": {"value": "black"},
+        "opacity": {
+          "condition": {"selection": "genderSelection", "value": 1},
+          "value": 1
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"grid": true, "gridOpacity": 0.3}
+  }
+}
