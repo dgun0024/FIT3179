@@ -78,26 +78,46 @@
         ]
       }
     },
+
     {
       "mark": {
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "dx": 10,
         "fontSize": 11,
-        "fontWeight": "bold"
+        "dx": 10,
+        "lineBreak": "\n",
+        "fontStyle": "italic"
       },
+      "transform": [{"filter": "datum['State/Territory'] == 'VIC'"}],
       "encoding": {
-        "text": {"field": "State/Territory", "type": "nominal"},
-        "color": {"value": "black"},
-        "opacity": {"value": 1},
-        "tooltip": [
-          {"field": "State/Territory", "type": "nominal", "title": "State/Territory"},
-          {"field": "FullStateName", "type": "nominal", "title": "Full Name"},
-          {"field": "Students", "type": "quantitative", "format": ",", "title": "Total Students"},
-          {"field": "Spending Per Student", "type": "quantitative", "format": ".2f", "title": "Spending Per Student ($)"},
-          {"field": "Mean Naplan Score", "type": "quantitative", "format": ".2f", "title": "Mean NAPLAN Score"}
-        ]
+        "x": {"field": "Spending Per Student"},
+        "y": {"field": "Mean Naplan Score"},
+        "text": {
+          "value": "Victoria (VIC):\nDespite lower spending per student (AUD 15.92k),\nVictoria achieves the highest mean NAPLAN score (568.37)."
+        },
+        "color": {"value": "black"}
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "fontSize": 11,
+        "dx": -10,
+        "lineBreak": "\n",
+        "fontStyle": "italic"
+      },
+      "transform": [{"filter": "datum['State/Territory'] == 'NAT'"}],
+      "encoding": {
+        "x": {"field": "Spending Per Student"},
+        "y": {"field": "Mean Naplan Score"},
+        "text": {
+          "value": "Northern Territory (NAT):\nSpending per student is very high (AUD 28.69k),\nbut the mean NAPLAN score (545.56) is only moderate."
+        },
+        "color": {"value": "black"}
       }
     }
   ]
