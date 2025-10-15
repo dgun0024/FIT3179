@@ -1,0 +1,104 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 600,
+  "title": "Educational Performance vs Spending: Do Higher Investments Lead to Better Outcomes?",
+  "data": {
+    "url": "data/BudgetPerStudent.csv"
+  },
+  "transform": [
+    {"filter": "datum['Spending Per Student'] > 0"},
+    {"filter": "datum['Mean Naplan Score'] > 0"},
+    {"filter": "datum.Students > 0"}
+  ],
+  "encoding": {
+    "x": {
+      "field": "Spending Per Student",
+      "type": "quantitative",
+      "title": "Spending Per Student (AUD $)",
+      "axis": {"tickCount": 7},
+      "scale": {"domain": [14, 30]}
+    },
+    "y": {
+      "field": "Mean Naplan Score",
+      "type": "quantitative",
+      "title": "Mean NAPLAN Score",
+      "axis": {"tickCount": 6},
+      "scale": {"domain": [535, 575]}
+    }
+  },
+  "layer": [
+    {
+      "mark": "circle",
+      "encoding": {
+        "size": {
+          "field": "Students",
+          "type": "quantitative",
+          "scale": {
+            "type": "threshold",
+            "domain": [50000, 100000, 300000, 500000, 1000000],
+            "range": [100, 200, 300, 400, 500, 600]
+          },
+          "legend": {"title": "Total Students", "format": ".2s"}
+        },
+        "color": {
+          "field": "State/Territory",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "NSW",
+              "VIC",
+              "QLD",
+              "SA",
+              "WA",
+              "NAT",
+              "ACT",
+              "TAS"
+            ],
+            "range": [
+              "#e41a1c",
+              "#377eb8",
+              "#4daf4a",
+              "#984ea3",
+              "#ff7f00",
+              "#ffff33",
+              "#a65628",
+              "#f781bf"
+            ]
+          },
+          "legend": {"title": "State/Territory"}
+        },
+        "opacity": {"value": 0.7},
+        "tooltip": [
+          {"field": "State/Territory", "type": "nominal", "title": "State/Territory"},
+          {"field": "FullStateName", "type": "nominal", "title": "Full Name"},
+          {"field": "Spending Per Student", "type": "quantitative", "format": ".2f", "title": "Spending Per Student ($)"},
+          {"field": "Mean Naplan Score", "type": "quantitative", "format": ".2f", "title": "Mean NAPLAN Score"},
+          {"field": "Students", "type": "quantitative", "format": ",", "title": "Total Students"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 10,
+        "fontSize": 11,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "text": {"field": "State/Territory", "type": "nominal"},
+        "color": {"value": "black"},
+        "opacity": {"value": 1},
+        "tooltip": [
+          {"field": "State/Territory", "type": "nominal", "title": "State/Territory"},
+          {"field": "FullStateName", "type": "nominal", "title": "Full Name"},
+          {"field": "Students", "type": "quantitative", "format": ",", "title": "Total Students"},
+          {"field": "Spending Per Student", "type": "quantitative", "format": ".2f", "title": "Spending Per Student ($)"},
+          {"field": "Mean Naplan Score", "type": "quantitative", "format": ".2f", "title": "Mean NAPLAN Score"}
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSW School Suspensions Analysis Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3"></script>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page">
+        <!-- Header -->
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <h1>NSW School Suspensions Analysis</h1>
+                <p>Comprehensive analysis of student suspension trends and patterns across New South Wales schools (2012-2023)</p>
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <h2>Educational Spending by State and Territory</h2>
+                <p>This choropleth map displays the educational spending per student across Australian states and territories in 2019. The color intensity represents the level of investment in education, allowing for quick visual comparison of resource allocation across regions.</p>
+            </div>
+        </div>
+
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <div id="choropleth" class="vis-container"></div>
+            </div>
+        </div>
+
+        <!-- Scatter Plot Section -->
+        <div class="chart-section">
+            <div class="pure-g">
+                <div class="pure-u-1-1">
+                    <h2>Does Higher Spending Lead to Better Academic Outcomes?</h2>
+                    <p>This scatter plot examines the relationship between spending per student and mean NAPLAN scores across Australian states and territories. Circle size represents total student population. The visualization helps us understand whether higher educational investment translates to improved student performance, revealing which states achieve strong outcomes efficiently.</p>
+                </div>
+            </div>
+            <div class="pure-g">
+                <div class="pure-u-1-1">
+                    <div id="scatter" class="vis-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Series Section -->
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <h2>Suspension Trends by Age Group and Gender</h2>
+                <p>This interactive time series chart tracks suspension patterns across different age groups from 2012 to 2023. The visualization reveals temporal trends and gender disparities in suspension rates. Select different age groups to explore how suspension patterns vary across developmental stages.</p>
+            </div>
+        </div>
+
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <div id="timeseries" class="vis-container"></div>
+            </div>
+        </div>
+
+        <!-- Sankey Section -->
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <h2>2013 Suspension Flow Analysis</h2>
+                <p>This Sankey diagram visualizes the flow of suspension incidents in 2013, showing how suspensions from different year levels aggregate into the total, and then break down by specific reasons. The diagram reveals which year levels contribute most to suspensions and which behavioral issues are most prevalent.</p>
+            </div>
+        </div>
+
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <div id="chart" class="vis-container"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="pure-g">
+            <div class="pure-u-1-1 small-font">
+                <p><strong>Data Source:</strong> NSW Department of Education | This dashboard provides insights into student suspension patterns to support evidence-based policy making and intervention strategies.</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        console.log("Starting to load visualizations...");
+        
+        var spec1 = "js/time_series.vg.json";
+        vegaEmbed('#timeseries', spec1, {"actions": false}).then(function(result) {
+            console.log("Time series loaded successfully!");
+        }).catch(function(error) {
+            console.error("Time series error:", error);
+        });
+
+        var spec2 = "js/choropleth_map.vg.json";
+        vegaEmbed('#choropleth', spec2, {"actions": false}).then(function(result) {
+            console.log("Choropleth loaded successfully!");
+        }).catch(function(error) {
+            console.error("Choropleth error:", error);
+        });
+
+        var spec3 = "js/scatter_plot.vg.json";
+        vegaEmbed('#scatter', spec3, {"actions": false}).then(function(result) {
+            console.log("Scatter plot loaded successfully!");
+        }).catch(function(error) {
+            console.error("Scatter plot error:", error);
+        });
+    </script>
+    <script src="js/sankey.js"></script>
+</body>
+</html>
