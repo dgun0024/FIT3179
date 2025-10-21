@@ -64,11 +64,6 @@
         "type": "quantitative",
         "title": "Mean Score",
         "format": ".1f"
-      },
-      {
-        "field": "ABOVE NATIONAL MINIMAL STANDARD %",
-        "type": "nominal",
-        "title": "Above National Standard"
       }
     ]
   },
