@@ -1,11 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 800,
-  "height": 600,
-  "title": "Educational Performance vs Spending: Do Higher Investments Lead to Better Outcomes?",
+  "width": 600,
+  "height": 400,
   "data": {
     "url": "data/BudgetPerStudent.csv"
   },
+  "background": "transparent",
+  "config": { "view": { "stroke": null } },
   "transform": [
     {"filter": "datum['Spending Per Student'] > 0"},
     {"filter": "datum['Mean Naplan Score'] > 0"},
@@ -16,19 +17,39 @@
       "field": "Spending Per Student",
       "type": "quantitative",
       "title": "Spending Per Student (AUD $)",
-      "axis": {"tickCount": 7},
-      "scale": {"domain": [14, 30]}
+      "scale": {"domain": [14, 30]},
+      "axis": {
+        "tickCount": 7,
+        "labelFontSize": 11,
+        "titleFontSize": 11,
+        "titleFontWeight": "bold",
+        "grid": false
+      }
     },
     "y": {
       "field": "Mean Naplan Score",
       "type": "quantitative",
       "title": "Mean NAPLAN Score",
-      "axis": {"tickCount": 6},
-      "scale": {"domain": [535, 575]}
+      "scale": {"domain": [535, 575]},
+      "axis": {
+        "tickCount": 6,
+        "labelFontSize": 11,
+        "titleFontSize": 11,
+        "titleFontWeight": "bold",
+        "grid": false
+      }
     }
   },
   "layer": [
     {
+      "params": [
+        {
+          "name": "state_highlight",
+          "select": { "type": "point", "fields": ["State/Territory"] },
+          "bind": "legend"
+        }
+      ],
+      "transform": [{ "filter": { "param": "state_highlight" } }],
       "mark": "circle",
       "encoding": {
         "size": {
@@ -39,11 +60,17 @@
             "domain": [50000, 100000, 300000, 500000, 1000000],
             "range": [100, 200, 300, 400, 500, 600]
           },
-          "legend": {"title": "Total Students", "format": ".2s"}
+          "legend": {
+            "title": "Total Students",
+            "format": ".2s",
+            "labelFontSize": 11,
+            "titleFontSize": 11
+          }
         },
         "color": {
           "field": "State/Territory",
           "type": "nominal",
+          "title": "State/Territory",
           "scale": {
             "domain": [
               "NSW",
@@ -56,17 +83,20 @@
               "TAS"
             ],
             "range": [
-              "#e41a1c",
-              "#377eb8",
-              "#4daf4a",
-              "#984ea3",
-              "#ff7f00",
-              "#ffff33",
-              "#a65628",
-              "#f781bf"
+            "#0072B2", 
+            "#D55E00", 
+            "#F0E442",  
+            "#CC79A7", 
+            "#332288",  
+            "#A6761D", 
+            "#56B4E9",  
+            "#444E86"  
             ]
           },
-          "legend": {"title": "State/Territory"}
+          "legend": {
+            "labelFontSize": 11,
+            "titleFontSize": 11
+          }
         },
         "opacity": {"value": 0.7},
         "tooltip": [
@@ -78,14 +108,13 @@
         ]
       }
     },
-
     {
       "mark": {
         "type": "text",
         "align": "left",
         "baseline": "middle",
         "fontSize": 11,
-        "dx": 10,
+        "dx": 15,
         "lineBreak": "\n",
         "fontStyle": "italic"
       },
@@ -94,12 +123,11 @@
         "x": {"field": "Spending Per Student"},
         "y": {"field": "Mean Naplan Score"},
         "text": {
-          "value": "Victoria (VIC):\nDespite lower spending per student (AUD 15.92k),\nVictoria achieves the highest mean NAPLAN score (568.37)."
+          "value": "Despite the lowest spending\nper student (15.92), Victoria\nachieves the highest mean\nNAPLAN score (568.37)."
         },
         "color": {"value": "black"}
       }
     },
-
     {
       "mark": {
         "type": "text",
@@ -107,6 +135,7 @@
         "baseline": "middle",
         "fontSize": 11,
         "dx": -10,
+        "dy": -50,
         "lineBreak": "\n",
         "fontStyle": "italic"
       },
@@ -115,7 +144,7 @@
         "x": {"field": "Spending Per Student"},
         "y": {"field": "Mean Naplan Score"},
         "text": {
-          "value": "Northern Territory (NAT):\nSpending per student is very high (AUD 28.69k),\nbut the mean NAPLAN score (545.56) is only moderate."
+          "value": "Spending per student is very\nhigh in Northern Territory (28.69)\nbut the mean NAPLAN score\n(545.56) is only moderate."
         },
         "color": {"value": "black"}
       }

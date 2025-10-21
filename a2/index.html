@@ -1,117 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSW School Suspensions Analysis Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Australian Education Dashboard</title>
+
+    <!-- Vega stack -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3"></script>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;900&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="page">
-        <!-- Header -->
-        <div class="pure-g">
-            <div class="pure-u-1-1">
-                <h1>Schooling and Education in Australia</h1>
-                <p>Comprehensive analysis of student's academic performance, budgeting and discipline trends and patterns</p>
-            </div>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="container">
+      <!-- Page header -->
+      <header class="hero wrap">
+        <h1 class="site-title"><strong>Schooling and Education in Australia</strong></h1>
+      </header>
+
+      <!-- Educational investment and performance section -->
+      <section class="section">
+        <div class="section-band wrap">
+          <h2 class="section-title">Educational Investment and Academic Outcomes</h2>
         </div>
 
-        <!-- Map Section -->
-        <div class="pure-g">
-            <div class="pure-u-1-1">
-                <h2>Educational Spending by State and Territory</h2>
-                <p>This choropleth map displays the educational spending per student across Australian states and territories in 2019. The color intensity represents the level of investment in education, allowing for quick visual comparison of resource allocation across regions.</p>
-            </div>
+        <h3 class="subhead wrap">Educational Spending by State and Territory</h3>
+        <div class="vis-section wrap">
+          <div
+            id="choropleth"
+            aria-label="Choropleth map of educational spending"
+          ></div>
         </div>
 
-        <div class="pure-g">
-            <div class="pure-u-1-1">
-                <div id="choropleth" class="vis-container"></div>
-            </div>
+        <div class="split wrap">
+          <p class="muted">
+            This choropleth map displays the educational
+            spending per student across Australian states and territories in
+            2019. Australia's distribution of educational funding reveals <strong>stark regional inequalities</strong>, 
+            with some territories receiving nearly <strong>double</strong> the investment of others.
+          </p>
+          <p class="muted">
+            The <strong>Northern Territory</strong> leads with the highest spending at <strong>$28.69 per student</strong>, 
+            while <strong>Victoria</strong> receives the lowest allocation at just <strong>$15.92 per student</strong>. These disparities likely reflect the additional 
+            costs of delivering education in remote areas and smaller population centers.
+          </p>
         </div>
 
-        <!-- Scatter Plot Section -->
-        <div class="chart-section">
-            <div class="pure-g">
-                <div class="pure-u-1-1">
-                    <h2>Does Higher Spending Lead to Better Academic Outcomes?</h2>
-                    <p>This scatter plot examines the relationship between spending per student and mean NAPLAN scores across Australian states and territories. Circle size represents total student population. The visualization helps us understand whether higher educational investment translates to improved student performance, revealing which states achieve strong outcomes efficiently.</p>
-                </div>
-            </div>
-            <div class="pure-g">
-                <div class="pure-u-1-1">
-                    <div id="scatter" class="vis-container"></div>
-                </div>
-            </div>
+        <h3 class="subhead wrap">National Performance by Location</h3>
+        <div class="viz-row-two wrap">
+        <div class="vis-section">
+            <div
+            id="barchart"
+            aria-label="Bar chart of numeracy scores by location"
+            ></div>
         </div>
 
-        <!-- Time Series Section -->
-        <div class="pure-g">
-            <div class="pure-u-1-1">
-                <h2>Suspension Trends by Age Group and Gender</h2>
-                <p>This interactive time series chart tracks suspension patterns across different age groups from 2012 to 2023. The visualization reveals temporal trends and gender disparities in suspension rates. Select different age groups to explore how suspension patterns vary across developmental stages.</p>
-            </div>
+        <div class="vis-section">
+            <div
+            id="writingchart"
+            aria-label="Bar chart of writing scores by location"
+            ></div>
+        </div>
         </div>
 
-        <div class="pure-g">
-            <div class="pure-u-1-1">
-                <div id="timeseries" class="vis-container"></div>
-            </div>
+        <div class="split wrap">
+        <p class="muted">
+            These bar charts compare <span class="highlight-numeracy">national average numeracy</span> and <span class="highlight-writing">writing performance</span>
+            across different geographic locations. A concerning achievement gap emerges, with 
+            students in <strong>major cities</strong> scoring approximately 50-60 points higher than their 
+            peers in <strong>very remote areas</strong> across both subjects.
+        </p>
+        <p class="muted">
+            <strong>Major cities</strong> lead with mean scores of around <span class="highlight-numeracy">530 in numeracy</span> and 
+            <span class="highlight-writing">505 in writing</span>, while <strong>very remote areas</strong> struggle with scores around 
+            <span class="highlight-numeracy">470 in numeracy</span> and <span class="highlight-writing">445 in writing</span>. The consistent pattern 
+            across both domains suggests systemic barriers—including teacher shortages, limited resources, 
+            and connectivity issues—that disproportionately affect rural and remote students.
+        </p>
         </div>
 
-        <!-- Sankey Section -->
-        <div class="pure-g">
-            <div class="pure-u-1-1">
-                <h2>2013 Suspension Flow Analysis</h2>
-                <p>This Sankey diagram visualizes the flow of suspension incidents in 2013, showing how suspensions from different year levels aggregate into the total, and then break down by specific reasons. The diagram reveals which year levels contribute most to suspensions and which behavioral issues are most prevalent.</p>
-            </div>
+        <h3 class="subhead wrap">Spending vs Academic Performance</h3>
+        <div class="vis-section wrap">
+          <div
+            id="scatter"
+            aria-label="Scatter plot of spending vs NAPLAN scores"
+          ></div>
         </div>
 
-        <div class="pure-g">
-            <div class="pure-u-1-1">
-                <div id="chart" class="vis-container"></div>
-            </div>
+        <div class="split wrap">
+          <p class="muted">
+            This <strong>scatter plot</strong> examines the relationship between
+            spending per student and <strong>mean NAPLAN scores</strong> across states
+            and territories. The data reveals a surprising paradox: higher investment doesn't 
+            guarantee better outcomes, suggesting that educational quality depends on multiple 
+            factors beyond pure financial resources. Factors such as <strong>remoteness, socio-economic 
+            differences, and varying access to qualified teachers</strong> can all influence student performance.
+          </p>
+          <p class="muted">
+            <span class="highlight-vic">Victoria</span> achieves the <strong>highest mean NAPLAN score of 568.37</strong> 
+            with the lowest <span class="highlight-spending">spending of just $15.92 per student</span>, demonstrating 
+            exceptional efficiency. Meanwhile, the <span class="highlight-nt">Northern Territory</span> invests 
+            <span class="highlight-spending">$28.69 per student</span>—nearly 80% more—yet achieves a moderate score of 545.56. 
+            This suggests factors like teaching quality, curriculum effectiveness, and socioeconomic 
+            contexts may outweigh funding levels in determining student success.
+          </p>
+        </div>
+      </section>
+
+      <!-- Discipline and attendance section -->
+      <section class="section">
+        <div class="section-band wrap">
+          <h2 class="section-title">Student Discipline Patterns Over Time</h2>
         </div>
 
-        <!-- Footer -->
-        <div class="pure-g">
-            <div class="pure-u-1-1 small-font">
-                <p><strong>Data Source:</strong> NSW Department of Education | This dashboard provides insights into student suspension patterns to support evidence-based policy making and intervention strategies.</p>
-            </div>
+        <h3 class="subhead wrap">Attendance Rates Over Time</h3>
+        <div class="vis-section wrap">
+          <div
+            id="attendance"
+            aria-label="Line chart of attendance rates"
+          ></div>
         </div>
-    </div>
 
-    <script type="text/javascript">
-        console.log("Starting to load visualizations...");
-        
-        var spec1 = "js/time_series.vg.json";
-        vegaEmbed('#timeseries', spec1, {"actions": false}).then(function(result) {
-            console.log("Time series loaded successfully!");
-        }).catch(function(error) {
-            console.error("Time series error:", error);
-        });
+        <div class="split wrap">
+          <p class="muted">
+            This <strong>line chart</strong> tracks school <span class="highlight-primary">attendance
+            rates</span> from 2012 to 2023 across school levels. A persistent gap exists between 
+            <span class="highlight-primary">primary</span> and <span class="highlight-secondary">secondary</span> students, with 
+            <span class="highlight-primary">primary attendance</span> consistently maintaining around 92-93% while 
+            <span class="highlight-secondary">secondary attendance</span> hovers around 87-88% throughout the period.
+            Indeed, there appears to be a decline in discipline and engagement as individuals grow older, potentially reflecting 
+            increased independence, social factors, and external commitments during secondary schooling.
+          </p>
+          <p class="muted">
+            The <strong>COVID-19 pandemic</strong> (2020-2022) caused notable disruptions, with both levels 
+            experiencing declines—<span class="highlight-primary">primary attendance</span> dropped to approximately 90% 
+            and <span class="highlight-secondary">secondary attendance</span> fell to around 84% during 2021. The 4-5 
+            percentage point gap between school levels persists across all years, suggesting that 
+            engagement challenges intensify as students progress through adolescence, possibly due 
+            to increased independence, work commitments, or disengagement from traditional schooling.
+          </p>
+        </div>
 
-        var spec2 = "js/choropleth_map.vg.json";
-        vegaEmbed('#choropleth', spec2, {"actions": false}).then(function(result) {
-            console.log("Choropleth loaded successfully!");
-        }).catch(function(error) {
-            console.error("Choropleth error:", error);
-        });
+        <h3 class="subhead wrap">Suspension Trends by Age Group and Gender</h3>
+        <div class="vis-section wrap">
+          <div
+            id="timeseries"
+            aria-label="Time series of suspensions by age and gender"
+          ></div>
+        </div>
+        <div class="split wrap">
+          <p class="muted">
+            This interactive time series reveals suspension patterns across age groups 
+            and genders from 2012 to 2023. A striking gender disparity emerges across all age groups, 
+            with <span class="highlight-male">male students</span> consistently receiving 2-3 times more 
+            suspensions than <span class="highlight-female">female students</span>, peaking in the 13-16 years 
+            age bracket where <strong>males account for approximately 75% of all suspensions</strong>. This stable pattern 
+            indicates behavioral differences or potential bias in disciplinary responses.
+          </p>
+          <p class="muted">
+            Select different age groups to observe how suspension rates escalate dramatically 
+            during adolescence—the 13-16 age group shows suspension numbers reaching <strong>over 30,000</strong> for 
+            <span class="highlight-male">males</span> in peak years, compared to around 10,000 for 
+            <span class="highlight-female">females</span>. The 2020-2021 period shows notable decreases 
+            across all groups, likely reflecting pandemic-related school closures and remote learning, 
+            with rates rebounding in 2022-2023 as students returned to in-person instruction.
+          </p>
+        </div>
 
-        var spec3 = "js/scatter_plot.vg.json";
-        vegaEmbed('#scatter', spec3, {"actions": false}).then(function(result) {
-            console.log("Scatter plot loaded successfully!");
-        }).catch(function(error) {
-            console.error("Scatter plot error:", error);
-        });
+        <h3 class="subhead wrap">Understanding Suspension Causes</h3>
+        <div class="vis-section wrap">
+          <div
+            id="chart"
+            aria-label="Sankey diagram of suspension flows"
+          ></div>
+        </div>
+        <div class="split wrap">
+          <p class="muted">
+            This Sankey diagram> maps the flow of suspension incidents in 2013, 
+            tracing how <span class="highlight-year-flow">suspensions from different year levels</span> 
+            aggregate into the total of approximately 66,000 incidents, then branch into 
+            <span class="highlight-reason-flow">specific behavioral categories</span>. The visualization 
+            reveals which student groups and behaviors drive disciplinary actions. <span class="highlight-year-flow">Years 9-10</span> contribute the largest share of suspensions, 
+            followed by <span class="highlight-year-flow">Years 7-8</span>, confirming that early to mid-adolescence 
+            represents the peak period for disciplinary issues.
+          </p>
+          <p class="muted">
+            Among <span class="highlight-reason-flow">behavioral causes</span>, 
+            physical violence and aggressive behavior dominate as the leading reasons for suspension, 
+            followed by persistent disobedience and substance-related incidents, suggesting that targeted 
+            intervention programs focusing on conflict resolution and emotional regulation during the 
+            transition to secondary school could significantly reduce suspension rates.
+          </p>
+        </div>
+      </section>
+
+      <hr
+        style="border: 0; height: 6px; background: #ddd; margin: 3rem 0 1.5rem"
+      />
+
+      <footer
+        class="wrap"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 2rem;
+          flex-wrap: wrap;
+          font-size: 0.95rem;
+          color: #555;
+          padding-bottom: 2rem;
+        "
+      >
+        <!-- Author information -->
+        <div style="min-width: 240px">
+          <p style="margin: 0 0 0.25rem 0">
+            <strong>Author:</strong>
+            <span style="font-weight: normal">Duleesha Gunaratne</span>
+          </p>
+          <p style="margin: 0">
+            <span><strong>Date:</strong> 21 Oct 2025 </span>
+          </p>
+        </div>
+
+        <!-- Data sources -->
+        <div
+          style="
+            min-width: 280px;
+            max-width: 500px;
+            text-align: right;
+            word-break: break-all;
+          "
+        >
+          <p style="margin: 0 0 0.25rem 0"><strong>Data source:</strong></p>
+          <ul
+            style="
+              margin: 0.25rem 0 0 0;
+              padding: 0;
+              list-style: none;
+              line-height: 1.6;
+            "
+          >
+            <li>
+                NSW Department of Education
+            </li>
+          </ul>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      vegaEmbed("#choropleth", "js/choropleth_map.vg.json", {
+        actions: { export: true, source: true, compiled: false, editor: true },
+      }).catch(console.error);
+
+      vegaEmbed("#barchart", "js/bar_chart.vg.json", {
+        actions: { export: true, source: true, compiled: false, editor: true },
+      }).catch(console.error);
+
+      vegaEmbed("#scatter", "js/scatter_plot.vg.json", {
+        actions: { export: true, source: true, compiled: false, editor: true },
+      }).catch(console.error);
+
+      vegaEmbed("#attendance", "js/attendance_line.vg.json", {
+        actions: { export: true, source: true, compiled: false, editor: true },
+      }).catch(console.error);
+
+      vegaEmbed("#timeseries", "js/time_series.vg.json", {
+        actions: { export: true, source: true, compiled: false, editor: true },
+      }).catch(console.error);
+
+      vegaEmbed("#writingchart", "js/writing_bar_chart.vg.json", {
+        actions: { export: true, source: true, compiled: false, editor: true },
+        }).catch(console.error);
     </script>
+
     <script src="js/sankey.js"></script>
-</body>
+  </body>
 </html>

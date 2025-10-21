@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "National Average Writing Results",
+    "fontSize": 18,
+    "anchor": "start"
+  },
+  "width": 380,
+  "height": 450,
+  "data": {
+    "url": "data/WritingResults.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "filter": "datum.STATE == 'Aust'"
+    },
+    {
+      "calculate": "toNumber(datum.MEAN)",
+      "as": "MeanScore"
+    },
+    {
+      "filter": "datum.MeanScore > 0"
+    }
+  ],
+  "mark": {
+    "type": "bar",
+    "cornerRadiusTopLeft": 3,
+    "cornerRadiusTopRight": 3,
+    "color": "#CC79A7"
+  },
+  "encoding": {
+    "x": {
+      "field": "GEOLOCATION",
+      "type": "nominal",
+      "axis": {
+        "title": "Geographic Location",
+        "labelAngle": -45,
+        "titleFontSize": 14,
+        "labelFontSize": 12
+      },
+      "sort": ["Major Cities", "Inner Regional", "Outer Regional", "Remote", "Very Remote"]
+    },
+    "y": {
+      "field": "MeanScore",
+      "type": "quantitative",
+      "scale": {
+        "domain": [0, 650]
+      },
+      "axis": {
+        "title": "Mean Writing Score",
+        "titleFontSize": 14,
+        "labelFontSize": 12
+      }
+    },
+    "tooltip": [
+      {
+        "field": "GEOLOCATION",
+        "type": "nominal",
+        "title": "Location"
+      },
+      {
+        "field": "MeanScore",
+        "type": "quantitative",
+        "title": "Mean Score",
+        "format": ".1f"
+      },
+      {
+        "field": "ABOVE NATIONAL MINIMAL STANDARD %",
+        "type": "nominal",
+        "title": "Above National Standard"
+      }
+    ]
+  },
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"grid": true, "gridOpacity": 0.3},
+    "background": "transparent"
+  }
+}

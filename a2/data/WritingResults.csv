@@ -1,0 +1,41 @@
+﻿STATE,GEOLOCATION,MEAN,ABOVE NATIONAL MINIMAL STANDARD %
+NSW,Major Cities,559.2,86
+NSW,Inner Regional,531.5,76.9
+NSW,Outer Regional,513.5,69.1
+NSW,Remote,474.3,50.6
+NSW,Very Remote,455.5,48.8
+Vic,Major Cities,561.6,86.9
+Vic,Inner Regional,543.2,82.1
+Vic,Outer Regional,541.5,81.7
+Vic,Remote,581.6,93.6
+Vic,Very Remote,,
+Qld,Major Cities,541.8,80.6
+Qld,Inner Regional,523.1,74
+Qld,Outer Regional,518.6,71.9
+Qld,Remote,483.5,58.6
+Qld,Very Remote,448.2,38.4
+WA,Major Cities,566.9,88
+WA,Inner Regional,545.6,83.4
+WA,Outer Regional,541.1,80.7
+WA,Remote,519.5,72.6
+WA,Very Remote,456.3,42.4
+SA,Major Cities,558,83.5
+SA,Inner Regional,541.5,79
+SA,Outer Regional,522.6,71.6
+SA,Remote,531.4,76.3
+SA,Very Remote,484.4,52.5
+Tas,Major Cities,,
+Tas,Inner Regional,549.5,81.9
+Tas,Outer Regional,531.4,76
+Tas,Remote,499.6,61.6
+Tas,Very Remote,,
+NT,Major Cities,,
+NT,Inner Regional,,
+NT,Outer Regional,506.1,64.5
+NT,Remote,462.4,49.9
+NT,Very Remote,307,8.4
+Aust,Major Cities,557.2,85.2
+Aust,Inner Regional,535.2,78.4
+Aust,Outer Regional,523.2,73.3
+Aust,Remote,503.2,65.4
+Aust,Very Remote,402.4,30.2

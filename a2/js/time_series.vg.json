@@ -1,16 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {
-    "text": "Student Suspensions by Age Group and Gender in NSW (2012-2023)",
-    "fontSize": 22,
-    "anchor": "start"
-  },
-  "width": 900,
-  "height": 450,
-  "data": {
-    "url": "data/SuspensionData.csv",
-    "format": {"type": "csv"}
-  },
+  "description": "Area chart showing suspension trends in Australia by age group and gender.",
+  "data": { "url": "data/SuspensionData.csv" },
+  "background": "transparent",
+  "config": { "view": { "stroke": null } },
   "params": [
     {
       "name": "ageGroupFilter",
@@ -33,6 +26,11 @@
         ],
         "name": "Age Group: "
       }
+    },
+    {
+      "name": "gender_highlight",
+      "select": { "type": "point", "fields": ["Gender"] },
+      "bind": "legend"
     }
   ],
   "transform": [
@@ -43,165 +41,67 @@
       ],
       "as": ["Year", "Suspensions"]
     },
-    {
-      "calculate": "toNumber(datum.Suspensions)", "as": "Suspensions"
-    },
-    {
-      "filter": "datum.Age_Group == ageGroupFilter"
-    },
-    {
-      "joinaggregate": [
-        {"op": "max", "field": "Suspensions", "as": "MaxSuspensions"},
-        {"op": "min", "field": "Suspensions", "as": "MinSuspensions"}
-      ],
-      "groupby": ["Gender"]
-    },
-    {
-      "calculate":  "'Highest in ' + datum.Year",
-      "as": "max_label"
-    },
-    {
-      "calculate": "'Lowest in ' + datum.Year",
-      "as": "min_label"
-    }
+    {"calculate": "toNumber(datum.Suspensions)", "as": "Suspensions"},
+    {"filter": "datum.Age_Group == ageGroupFilter"}
   ],
+  "mark": { 
+    "type": "area",
+    "line": true,
+    "point": true
+  },
   "encoding": {
     "x": {
       "field": "Year",
       "type": "ordinal",
+      "title": "Year",
       "axis": {
-        "title": "Year",
         "labelAngle": -45,
-        "titleFontSize": 14,
-        "labelFontSize": 12
+        "labelFontSize": 11,
+        "titleFontSize": 11,
+        "titleFontWeight": "bold",
+        "grid": false
       }
     },
     "y": {
       "field": "Suspensions",
       "type": "quantitative",
-      "scale": {
-        "zero": true,
-        "padding": 20
-      },
+      "title": "Number of Suspensions",
+      "scale": { "zero": true },
       "axis": {
-        "title": "Number of Suspensions",
-        "titleFontSize": 14,
-        "labelFontSize": 12
+        "labelFontSize": 11,
+        "titleFontSize": 11,
+        "titleFontWeight": "bold",
+        "grid": false
       }
-    }
+    },
+    "color": {
+      "field": "Gender",
+      "type": "nominal",
+      "title": "Gender",
+      "scale": {
+        "domain": ["Female", "Male"],
+        "range": ["#0072B2", "#E69F00"]
+      },
+      "legend": {
+        "labelFontSize": 11,
+        "titleFontSize": 11
+      }
+    },
+    "opacity": {
+      "condition": { "param": "gender_highlight", "value": 0.6 },
+      "value": 0.1
+    },
+    "tooltip": [
+      {
+        "field": "Age_Group",
+        "type": "nominal",
+        "title": "Age Group"
+      },
+      { "field": "Gender", "type": "nominal" },
+      { "field": "Year", "type": "ordinal", "title": "Year" },
+      { "field": "Suspensions", "type": "quantitative", "format": "," }
+    ]
   },
-  "layer": [
-    {
-      "mark": {
-        "type": "line",
-        "strokeWidth": 3
-      },
-      "selection": {
-        "genderSelection": {
-          "type": "multi",
-          "fields": ["Gender"],
-          "bind": "legend"
-        }
-      },
-      "encoding": {
-        "color": {
-          "field": "Gender",
-          "type": "nominal",
-          "scale": {"domain": ["Female", "Male"], "range": ["#0072B2", "#D55E00"]},
-          "legend": {
-            "title": "Gender (Click to Filter)",
-            "titleFontSize": 13,
-            "labelFontSize": 12,
-            "orient": "right"
-          }
-        },
-        "opacity": {
-          "condition": {"selection": "genderSelection", "value": 1},
-          "value": 0.15
-        },
-        "tooltip": [
-          {"field": "Age_Group", "type": "nominal", "title": "Age Group"},
-          {"field": "Gender", "type": "nominal", "title": "Gender"},
-          {"field": "Year", "type": "ordinal", "title": "Year"},
-          {
-            "field": "Suspensions",
-            "type": "quantitative",
-            "title": "Number of Suspensions",
-            "format": ","
-          }
-        ]
-      }
-    },
-    {
-      "mark": {
-        "type": "circle",
-        "size": 30
-      },
-      "encoding": {
-        "color": {
-          "field": "Gender",
-          "type": "nominal",
-          "scale": {"domain": ["Female", "Male"], "range": ["#e377c2", "#1f77b4"]}
-        },
-        "opacity": {
-          "condition": {"selection": "genderSelection", "value": 1},
-          "value": 0.15
-        }
-      }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "baseline": "bottom",
-        "bandSize": 0,
-        "dy": -15,
-        "fontSize": 11,
-        "fontStyle": "italic",
-        "lineBreak": "\n"
-      },
-      "encoding": {
-        "text": {
-          "condition": {
-            "test": "datum.Suspensions == datum.MaxSuspensions",
-            "value": {"expr": "'Highest suspensions\\nof ' + format(datum.Suspensions, ',') + ' in ' + datum.Year"}
-          },
-          "value": ""
-        },
-        "color": {"value": "black"},
-        "opacity": {
-          "condition": {"selection": "genderSelection", "value": 1},
-          "value": 1
-        }
-      }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "line-bottom",
-        "dy": 15,
-        "fontSize": 11,
-        "fontStyle": "italic",
-        "lineBreak": "\n"
-      },
-      "encoding": {
-        "text": {
-          "condition": {
-            "test": "datum.Suspensions == datum.MinSuspensions",
-            "value": {"expr": "'Lowest suspensions\\nof ' + format(datum.Suspensions, ',') + ' in ' + datum.Year"}
-          },
-          "value": ""
-        },
-        "color": {"value": "black"},
-        "opacity": {
-          "condition": {"selection": "genderSelection", "value": 1},
-          "value": 1
-        }
-      }
-    }
-  ],
-  "config": {
-    "view": {"stroke": null},
-    "axis": {"grid": true, "gridOpacity": 0.3}
-  }
+  "width": 600,
+  "height": 400
 }

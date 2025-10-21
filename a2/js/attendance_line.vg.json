@@ -1,0 +1,143 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background": "transparent",
+  "config": { "view": { "stroke": null } },
+  "width": 600,
+  "height": 400,
+  "layer": [
+    {
+      "data": { "url": "data/Attendance.csv" },
+      "transform": [
+        {
+          "fold": [
+            "2012", "2013", "2014", "2015", "2016", "2017",
+            "2018", "2019", "2020", "2021", "2022", "2023"
+          ],
+          "as": ["Year", "Attendance"]
+        },
+        {
+          "calculate": "toNumber(datum.Attendance)",
+          "as": "Attendance"
+        },
+        {
+          "calculate": "if(indexof(['Year 1','Year 2','Year 3','Year 4','Year 5','Year 6'], datum.Year_Level) >= 0, 'Primary', 'Secondary')",
+          "as": "School_Level"
+        },
+        {
+          "aggregate": [{"op": "mean", "field": "Attendance", "as": "Average_Attendance"}],
+          "groupby": ["Year", "School_Level"]
+        }
+      ],
+      "params": [
+        {
+          "name": "level_highlight",
+          "select": { "type": "point", "fields": ["School_Level"] },
+          "bind": "legend"
+        }
+      ],
+      "mark": { "type": "line", "point": true },
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal",
+          "title": "Year",
+          "axis": {
+            "labelAngle": -45,
+            "labelFontSize": 11,
+            "titleFontSize": 11,
+            "titleFontWeight": "bold",
+            "grid": false
+          }
+        },
+        "y": {
+          "field": "Average_Attendance",
+          "type": "quantitative",
+          "title": "Attendance Rate (%)",
+          "scale": { "zero": false },
+          "axis": {
+            "labelFontSize": 11,
+            "titleFontSize": 11,
+            "titleFontWeight": "bold",
+            "grid": false
+          }
+        },
+        "color": {
+          "field": "School_Level",
+          "type": "nominal",
+          "title": "School Level",
+          "scale": {
+            "domain": ["Primary", "Secondary"],
+            "range": ["#56B4E9", "#D55E00"]
+          },
+          "legend": {
+            "labelFontSize": 11,
+            "titleFontSize": 11
+          }
+        },
+        "strokeWidth": {
+          "condition": { "param": "level_highlight", "value": 3 },
+          "value": 1.5
+        },
+        "opacity": {
+          "condition": { "param": "level_highlight", "value": 1 },
+          "value": 0.2
+        },
+        "tooltip": [
+          { "field": "School_Level", "type": "nominal", "title": "School Level" },
+          { "field": "Year", "type": "ordinal", "title": "Year" },
+          { "field": "Average_Attendance", "type": "quantitative", "title": "Attendance (%)", "format": ".1f" }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "Year": "2020",
+            "Average_Attendance": 84.5,
+            "text": "COVID Pandemic\n(2020–2022) caused\na decline in both\nprimary and secondary\nschool attendance"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontStyle": "italic",
+        "align": "left",
+        "dx": -50,
+        "dy": -10,
+        "lineBreak": "\n"
+      },
+      "encoding": {
+        "x": {"field": "Year", "type": "ordinal"},
+        "y": {"field": "Average_Attendance", "type": "quantitative"},
+        "text": {"field": "text", "type": "nominal"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "Year": "2012",
+            "Average_Attendance": 87,
+            "text": "Secondary school attendance\nis consistently lower than\nprimary attendance across\n all years"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontStyle": "italic",
+        "align": "left",
+        "dx": 0,
+        "dy": -20,
+        "lineBreak": "\n"
+      },
+      "encoding": {
+        "x": {"field": "Year", "type": "ordinal"},
+        "y": {"field": "Average_Attendance", "type": "quantitative"},
+        "text": {"field": "text", "type": "nominal"}
+      }
+    }
+  ]
+}
